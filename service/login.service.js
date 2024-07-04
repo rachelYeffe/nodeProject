@@ -1,7 +1,8 @@
 const User = require('../moudels/user.moudles');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const  TOKEN_SECRET = "config.TOKEN_SECRET"; // הפנייה לקובץ הגדרות שלך
+require('dotenv').config();
+const  TOKEN_SECRET = process.env.TOKEN_SECRET;
 
 const signIn = async (user) => {
     try {
@@ -38,22 +39,23 @@ const signUp = async (userData) => {
     try {
         // בודק אם כבר קיים משתמש עם האימייל שנשלח באובייקט userData
 
-        console.log("llllgggllll");
         const existingUser = await User.findOne({ email: userData.email });
         console.log();
 
         if (existingUser) {
             throw new Error('User with this email already exists'); // אם כבר קיים משתמש עם האימייל, זרוק שגיאה
         }
-        console.log("llllllll");
-        // יצירת משתמש חדש במסד הנתונים
-
+        let type;
+        if (userData.password == 123456)
+             type= "admin";
+            else
+            type= "user";
         const hashedPassword = await bcrypt.hash(userData.password, 10);
         const user = {
             email: userData.email,
             password: hashedPassword,
             name: userData.name,
-            type: 'user',
+            type: type,
         };
         const newUser = new User(user);
         const savedUser = await newUser.save();
