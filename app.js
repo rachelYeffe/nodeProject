@@ -1,4 +1,6 @@
 const express = require('express');
+require('dotenv').config({ path: '../env/enviroment.env' });
+
 const swaggerJsdoc = require('swagger-jsdoc');
 const swaggerUi = require('swagger-ui-express');
 const app = express();
@@ -8,7 +10,7 @@ const serviceController = require('./controller/services.controller.js');
 const bussinessController = require('./controller/bussines.controller.js');
 const productController = require('./controller/product.controller.js');
 const meetingController = require('./controller/meeting.controller.js');
-const {authMiddleware,isAdminMiddleware}=require('./middleware/auth.middleware.js')
+const {authMiddleware,isAdminMiddleware,isUserMiddleware}=require('./middleware/auth.middleware.js')
 const connectDB = require('./DB/db.js'); // החיבור ל- db.js שיצרת
 const swaggerSpecService = require('./swagger/swagger.js'); // יבוא של swaggerSpec מהקובץ של ה- swagger
 
@@ -27,9 +29,9 @@ app.use(express.urlencoded({ extended: true }));
 // Routes
 app.use("",loginController);
 app.use("/service",authMiddleware, serviceController);
-app.use("/business", bussinessController);
-app.use("/meeting", meetingController);
-app.use("/product", productController);
+app.use("/business",authMiddleware,isAdminMiddleware,bussinessController);
+app.use("/meeting", authMiddleware,isUserMiddleware,meetingController);
+app.use("/product",authMiddleware,productController);
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
