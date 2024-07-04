@@ -26,7 +26,7 @@ const router = Router();
  *               items:
  *                 $ref: '#/components/schemas/Service'
  */
-router.get('/',isAdminMiddleware,async (req, res) => {
+router.get('/',async (req, res) => {
     try {
         const services = await service.getAllService();
         res.send(services);
@@ -120,7 +120,7 @@ router.delete('/:serviceId', async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Service'
  */
-router.post('/', async (req, res) => {
+router.post('/',isAdminMiddleware, async (req, res) => {
     try {
         const newService = req.body;
         console.log("fff");

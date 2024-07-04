@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const meetingService = require('../service/meeting.service');
-
+const {isAdminMiddleware}=require('../middleware/auth.middleware');
 const router = Router();
 
 /**
@@ -89,7 +89,7 @@ router.get('/:meetingId', async (req, res) => {
  *       404:
  *         description: Meeting not found
  */
-router.delete('/:meetingId', async (req, res) => {
+router.delete('/:meetingId',isAdminMiddleware, async (req, res) => {
     try {
         const meetingId = req.params.meetingId;
         await meetingService.deleteMeeting(meetingId);
@@ -120,7 +120,7 @@ router.delete('/:meetingId', async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Meeting'
  */
-router.post('/', async (req, res) => {
+router.post('/',isAdminMiddleware,async (req, res) => {
     try {
         const newMeeting = req.body;
         const createdMeeting = await meetingService.addMeeting(newMeeting);

@@ -31,8 +31,30 @@ const isAdminMiddleware = async (req, res, next) => {
 
         // Assuming your user type is stored in the JWT payload under 'usrType'
         const userType = req.user;
-        console.log(userType);
+        console.log(userType+" " +req.user);
+        
         if (userType !== 'admin') {
+            return res.status(403).json({ message: 'Unauthorized access' });
+        }
+
+        next();
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        return res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
+const isUserMiddleware = async (req, res, next) => {
+    try {
+        if (!req.user) {
+            return res.status(401).json({ message: 'User information not available' });
+        }
+
+        // Assuming your user type is stored in the JWT payload under 'usrType'
+        const userType = req.user;
+        console.log(userType);
+        if (userType !== 'user'&&userType !== 'admin') {
             return res.status(403).json({ message: 'Unauthorized access' });
         }
 
@@ -46,4 +68,5 @@ const isAdminMiddleware = async (req, res, next) => {
 module.exports = {
     authMiddleware,
     isAdminMiddleware,
+    isUserMiddleware,
 };

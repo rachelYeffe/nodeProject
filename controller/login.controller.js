@@ -84,11 +84,8 @@ router.post('/signin', async (req, res) => {
  */
 router.post('/signup', async (req, res) => {
     try {
-        console.log("lll");
         const userData = req.body;
-        console.log(userData);
         const newUser = await userService.signUp(userData);
-        console.log("ggggggg");
         res.status(201).json(newUser);
     } catch (error) {
         console.error(`Error in signing up: ${error.message}`);

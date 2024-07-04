@@ -1,5 +1,6 @@
 const { Router } = require('express');
 const productService = require('../service/product.service');
+const {isAdminMiddleware,isUserMiddleware}=require('../middleware/auth.middleware');
 
 const router = Router();
 
@@ -89,7 +90,7 @@ router.get('/', async (req, res) => {
  *       404:
  *         description: Product not found
  */
-router.delete('/:productId', async (req, res) => {
+router.delete('/:productId',isAdminMiddleware, async (req, res) => {
     try {
         const productId = req.params.productId;
         await productService.deleteProduct(productId);
@@ -120,7 +121,7 @@ router.delete('/:productId', async (req, res) => {
  *             schema:
  *               $ref: '#/components/schemas/Product'
  */
-router.post('/', async (req, res) => {
+router.post('/',isUserMiddleware, async (req, res) => {
     try {
         const newProduct = req.body;
         const createdProduct = await productService.addProduct(newProduct);

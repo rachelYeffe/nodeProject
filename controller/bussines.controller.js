@@ -93,10 +93,10 @@ router.delete('/:businessId', async (req, res) => {
     try {
         const businessId = req.params.businessId;
         await businessService.deleteBusiness(businessId);
-        res.send("Business deleted successfully");
+        res.send(true);
     } catch (error) {
         console.error(`Error in deleting business: ${error.message}`);
-        res.status(500).send(`Error in deleting business: ${error.message}`);
+        res.status(500).send(false);
     }
 });
 
