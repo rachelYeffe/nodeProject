@@ -22,7 +22,6 @@ const swaggerOptions = {
                 Business: {
                     type: 'object',
                     properties: {
-                        ID: { type: 'string' },
                         Description: { type: 'string' },
                     },
                 },
