@@ -10,7 +10,7 @@ const ProductModelSchema = new Schema({
 },{ versionKey: false });
 
 const productModel = mongoose.model("product", ProductModelSchema);
-module.exports = {productModel};
+module.exports = productModel;
 
 
 

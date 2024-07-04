@@ -6,7 +6,7 @@ const meetingSchema = new Schema({
   Description: { type: String, required: true },
 },{ versionKey: false });
 const MeetingModel = mongoose.model("meeting", meetingSchema);
-module.exports = {MeetingModel};
+module.exports = MeetingModel;
 
 
 
